@@ -19,6 +19,11 @@ ENV_REF_PATTERN = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}")
 MAX_ENV_BYTES = 256 * 1024
 
 
+def _is_placeholder_value(value: str) -> bool:
+    stripped = value.strip()
+    return stripped.startswith(PLACEHOLDER_PREFIXES) or bool(ENV_REF_PATTERN.search(stripped))
+
+
 def _load_config(path: Path) -> tuple[dict[str, Any] | None, str | None]:
     if not path.exists():
         return {}, None
@@ -66,7 +71,7 @@ def _has_inline_sensitive_value(mapping: Any) -> list[str]:
         key_s = str(key)
         value_s = value if isinstance(value, str) else ""
         key_looks_secret = any(part in key_s.lower() for part in SECRET_KEY_PARTS)
-        value_looks_inline = bool(value_s) and not value_s.strip().startswith(PLACEHOLDER_PREFIXES)
+        value_looks_inline = bool(value_s) and not _is_placeholder_value(value_s)
         if key_looks_secret and value_looks_inline:
             risky.append(key_s)
     return sorted(set(risky))

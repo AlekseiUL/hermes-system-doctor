@@ -31,6 +31,7 @@ def assert_no_traps(output: str):
 def test_mcp_safe_inventory_reports_config_shape_without_secret_values(tmp_path):
     home = tmp_path / "hermes"
     home.mkdir()
+    (home / ".env").write_text("PRESENT_MCP_HEADER_TEST_VAR=not-a-real-secret\n", encoding="utf-8")
     (home / "config.yaml").write_text(
         "mcp_servers:\n"
         "  local_time:\n"
@@ -46,7 +47,11 @@ def test_mcp_safe_inventory_reports_config_shape_without_secret_values(tmp_path)
         "    url: http://example.com/mcp\n"
         "    headers:\n"
         "      Authorization: LEAK_TRAP_MCP_HEADER_VALUE\n"
-        "      X-Api-Key: ${MISSING_MCP_HEADER_TEST_VAR}\n",
+        "      X-Api-Key: ${MISSING_MCP_HEADER_TEST_VAR}\n"
+        "  remote_env_bearer:\n"
+        "    url: https://example.com/mcp\n"
+        "    headers:\n"
+        "      Authorization: Bearer ${PRESENT_MCP_HEADER_TEST_VAR}\n",
         encoding="utf-8",
     )
     result = run_cli("full", "--hermes-home", str(home), "--json")
