@@ -1,0 +1,11 @@
+{
+  "fixture_contract_version": 1,
+  "kind": "synthetic-offline",
+  "files": {
+    "tests/fixtures/hermes_home_multi_profile/config.yaml": "c8c48f44691e560e6916b94b1dad29540c1266c68c30d4776859e2bbd54f6f09",
+    "tests/fixtures/hermes_home_multi_profile/profiles/operator/config.yaml": "73497d6d3146090762da8979d47ec60702b4aa947e2ef91ed01710f4c73224dd",
+    "tests/test_gateway_post_update.py": "1d7dff7490d26e1ec4366401339401f104a956adf3eadbb8b8bc0ce55102b6ef",
+    "tests/test_read_only.py": "f18d934a0698511a5b3fa63667acd3cc1bdb4d65bce77c496f1e2d023e953576"
+  },
+  "limits": "Pins synthetic fixture contracts only. No live host, clinical, remote API, or provider quality certification. Refresh intentionally with reviewed fixture changes."
+}
