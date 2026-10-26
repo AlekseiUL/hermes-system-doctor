@@ -159,7 +159,7 @@ def load_report(path: Path) -> dict[str, Any]:
     payload = path.read_text(encoding="utf-8")
     data = json.loads(payload)
     if not isinstance(data, dict):
-        raise ValueError("report JSON must be an object")
+        raise ValueError("report JSON must be an object")  # noqa: TRY004 - invalid serialized value, public ValueError contract
     return data
 
 

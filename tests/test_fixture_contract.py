@@ -1,5 +1,7 @@
-import hashlib, json
+import hashlib
+import json
 from pathlib import Path
+
 
 def test_versioned_synthetic_contract():
     root=Path(__file__).resolve().parents[1]

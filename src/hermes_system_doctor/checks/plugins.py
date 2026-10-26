@@ -41,7 +41,7 @@ def _load_config(path: Path) -> tuple[dict[str, Any] | None, str | None]:
         return None, "config_symlink"
     try:
         parsed = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    except Exception as exc:
+    except (OSError, ValueError, yaml.YAMLError, RecursionError) as exc:
         return None, exc.__class__.__name__
     if not isinstance(parsed, dict):
         return None, "config_not_mapping"
@@ -155,9 +155,9 @@ def _inline_sensitive_keys(metadata: Any) -> list[str]:
             for key, item in value.items():
                 key_s = str(key)
                 item_s = item if isinstance(item, str) else ""
-                if any(part in key_s.lower() for part in SECRET_KEY_PARTS):
-                    if item_s and not item_s.strip().startswith(PLACEHOLDER_PREFIXES):
-                        risky.append(key_s)
+                if (any(part in key_s.lower() for part in SECRET_KEY_PARTS)
+                        and item_s and not item_s.strip().startswith(PLACEHOLDER_PREFIXES)):
+                    risky.append(key_s)
                 visit(item)
         elif isinstance(value, list):
             for item in value:

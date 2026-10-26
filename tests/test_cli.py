@@ -8,6 +8,7 @@ def run_cli(*args):
         [sys.executable, "-m", "hermes_system_doctor.cli", *args],
         text=True,
         capture_output=True,
+        check=False,
     )
 
 

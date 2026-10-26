@@ -54,9 +54,9 @@ def config_check(hermes_home: Path) -> CheckResult:
         try:
             parsed = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
             profile_fact["parse_ok"] = True
-            profile_fact["top_level_keys"] = sorted(str(k) for k in parsed.keys()) if isinstance(parsed, dict) else []
+            profile_fact["top_level_keys"] = sorted(str(k) for k in parsed) if isinstance(parsed, dict) else []
             profile_fact["value_shapes"] = _safe_keys(parsed)
-        except Exception as exc:
+        except (OSError, ValueError, yaml.YAMLError, RecursionError) as exc:
             profile_fact["parse_ok"] = False
             findings.append(
                 Finding(

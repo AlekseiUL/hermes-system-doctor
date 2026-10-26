@@ -53,7 +53,7 @@ class FixPreview:
 def load_repair_plan(path: Path) -> dict[str, Any]:
     data = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
-        raise ValueError("repair plan JSON must be an object")
+        raise ValueError("repair plan JSON must be an object")  # noqa: TRY004 - invalid serialized value, public ValueError contract
     return data
 
 
@@ -67,7 +67,7 @@ def _safe_action_id(action_id: str) -> str:
 def _actions(plan: dict[str, Any]) -> list[dict[str, Any]]:
     raw = plan.get("actions", [])
     if not isinstance(raw, list):
-        raise ValueError("repair plan actions must be a list")
+        raise ValueError("repair plan actions must be a list")  # noqa: TRY004 - invalid serialized value, public ValueError contract
     actions: list[dict[str, Any]] = []
     for item in raw:
         if isinstance(item, dict):

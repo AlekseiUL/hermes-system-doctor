@@ -121,7 +121,7 @@ def memory_check(hermes_home: Path) -> CheckResult:
                             payload = handle.read(min(stat.st_size, FILE_WARN_BYTES + 1))
                         if len(payload) <= FILE_WARN_BYTES:
                             json.loads(payload.decode("utf-8", errors="strict"))
-                    except Exception:
+                    except (OSError, ValueError, RecursionError):
                         findings.append(
                             Finding(
                                 id="memory.json_invalid",

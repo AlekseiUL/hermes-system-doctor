@@ -41,7 +41,7 @@ def _path_inside(path: Path, root: Path) -> bool:
     try:
         path.resolve().relative_to(root.resolve())
         return True
-    except Exception:
+    except (OSError, ValueError, RuntimeError):
         return False
 
 
@@ -64,7 +64,7 @@ def cron_check(hermes_home: Path) -> CheckResult:
         for job_file in job_files:
             try:
                 data = json.loads(job_file.read_text(encoding="utf-8"))
-            except Exception as exc:
+            except (OSError, ValueError, RecursionError) as exc:
                 findings.append(
                     Finding(
                         id="cron.metadata_parse_error",
