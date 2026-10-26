@@ -6,3 +6,4 @@ include RELEASE_NOTES.md
 recursive-include docs *.md
 recursive-include docs/assets *.jpg
 recursive-include tests/fixtures *
+include tests/fixture-contract-v1.json

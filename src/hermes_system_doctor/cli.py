@@ -11,8 +11,8 @@ from .checks import (
     discover_home,
     gateway_check,
     logs_check,
-    memory_check,
     mcp_check,
+    memory_check,
     plugins_check,
     post_update_drift_check,
     profile_inventory_check,
@@ -26,7 +26,12 @@ from .fix_executor import (
 )
 from .models import DoctorReport
 from .path_utils import safe_home_label
-from .repair_plan import build_repair_plan, load_report, repair_plan_to_json, repair_plan_to_markdown
+from .repair_plan import (
+    build_repair_plan,
+    load_report,
+    repair_plan_to_json,
+    repair_plan_to_markdown,
+)
 from .reporting import to_json, to_markdown
 
 

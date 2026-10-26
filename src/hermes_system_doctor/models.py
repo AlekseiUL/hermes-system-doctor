@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field, asdict
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Literal
 
@@ -39,7 +39,7 @@ class DoctorReport:
     checks: list[CheckResult]
 
     @classmethod
-    def build(cls, mode: str, hermes_home: str, checks: list[CheckResult]) -> "DoctorReport":
+    def build(cls, mode: str, hermes_home: str, checks: list[CheckResult]) -> DoctorReport:
         order = ["OK", "UNKNOWN", "WARN", "FAIL", "NEEDS_APPROVAL"]
         status: Severity = "OK"
         for check in checks:

@@ -7,7 +7,7 @@ def safe_relpath(path: Path, root: Path) -> str:
     """Return a report-safe path relative to root, or a redacted basename fallback."""
     try:
         return str(path.resolve().relative_to(root.resolve()))
-    except Exception:
+    except (OSError, ValueError, RuntimeError):
         return f"[REDACTED_PATH]/{path.name}"
 
 
@@ -18,6 +18,6 @@ def safe_home_label(path: Path) -> str:
     try:
         if expanded.resolve() == default_home.resolve():
             return "~/.hermes"
-    except Exception:
-        pass
+    except (OSError, ValueError, RuntimeError):
+        return f"[REDACTED_PATH]/{expanded.name}"
     return f"[REDACTED_PATH]/{expanded.name}"

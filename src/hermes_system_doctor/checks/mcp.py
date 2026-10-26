@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-from pathlib import Path
-from typing import Any, cast
 import os
 import re
 import shutil
+from pathlib import Path
+from typing import Any, cast
 from urllib.parse import urlparse
 
 import yaml
@@ -26,7 +26,7 @@ def _load_config(path: Path) -> tuple[dict[str, Any] | None, str | None]:
         return None, "config_symlink"
     try:
         parsed = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    except Exception as exc:
+    except (OSError, ValueError, yaml.YAMLError, RecursionError) as exc:
         return None, exc.__class__.__name__
     if not isinstance(parsed, dict):
         return None, "config_not_mapping"
@@ -52,7 +52,7 @@ def _command_available(command: str, profile_path: Path) -> bool:
             profile_root = profile_path.resolve()
             if not resolved.is_relative_to(profile_root):
                 return False
-        except Exception:
+        except (OSError, ValueError, RuntimeError):
             return False
         return command_path.exists() and not command_path.is_dir()
     return shutil.which(command) is not None
@@ -262,7 +262,7 @@ def mcp_check(hermes_home: Path) -> CheckResult:
                         )
                     )
                 else:
-                    env_keys = sorted(str(key) for key in (env or {}).keys())
+                    env_keys = sorted(str(key) for key in (env or {}))
                     if env_keys:
                         facts["env_keys"][f"{profile_name}:{server_label}"] = env_keys
                     risky_env = _has_inline_sensitive_value(env)
@@ -337,7 +337,7 @@ def mcp_check(hermes_home: Path) -> CheckResult:
                         )
                     )
                 else:
-                    header_keys = sorted(str(key) for key in (headers or {}).keys())
+                    header_keys = sorted(str(key) for key in (headers or {}))
                     if header_keys:
                         facts["header_keys"][f"{profile_name}:{server_label}"] = header_keys
                     risky_headers = _has_inline_sensitive_value(headers)

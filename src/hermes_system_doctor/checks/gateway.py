@@ -28,7 +28,7 @@ def _load_config(path: Path) -> tuple[dict[str, Any] | None, str | None]:
         return None, "config_symlink"
     try:
         parsed = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-    except Exception as exc:
+    except (OSError, ValueError, yaml.YAMLError, RecursionError) as exc:
         return None, exc.__class__.__name__
     if not isinstance(parsed, dict):
         return None, "config_not_mapping"
